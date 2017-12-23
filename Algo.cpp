@@ -88,38 +88,6 @@ void initialiser (t_vecteur & vec, int d, double v){
 	}
 }
 
-t_vecteur significatif(t_vecteur vec, bool complet){
-	if(!complet)
-	{
-	    t_coord * memo = nullptr;
-	    t_coord * actu;
-	    int comp = 0;
-	    for(int i = 0 ; i < vec.dimension ; i++){
-            if(vec.tete->valeur != vec.defaut)
-            {
-                comp ++;
-                if(memo==nullptr)
-                {
-                        memo = vec.tete;
-                }
-                vec.tete->indice = comp;
-                actu = vec.tete;
-                vec.tete = vec.tete->suiv;
-            }else
-            {
-                actu->suiv = vec.tete->suiv;
-                vec.tete = vec.tete->suiv;
-            }
-        }
-        vec.tete = memo;
-        vec.dimension = comp;
-        return vec;
-	}else
-	{
-		return vec;
-	}
-}
-
 void afficher (t_vecteur vec, bool complet){
     t_coord * temp = vec.tete;
     if(complet)
@@ -155,7 +123,8 @@ void afficher (t_vecteur vec, bool complet){
 }
 
 void saisir (t_vecteur vec){
-    t_coord * Tempo = vec.tete;
+    t_coord * Tempo;
+    Tempo= vec.tete;
 	for (int i = 0; i < vec.dimension ; i++){
         if(Tempo->valeur == vec.defaut){
             bool valid;
@@ -179,22 +148,20 @@ void saisir (t_vecteur vec){
 
 t_vecteur somme (t_vecteur a, t_vecteur b){
     t_vecteur c;
-    if(a.dimension == b.dimension && a.dimension != 0){
+    if(a.dimension == b.dimension && a.dimension > 0){
         c.tete = new t_coord();
         c.dimension = a.dimension;
         c.defaut = a.defaut + b.defaut;
-        t_coord * temp = c.tete;
-        for(int i = 0 ; i < a.dimension ; i++){
-            temp->indice = a.tete->indice;
-            temp->valeur = a.tete->valeur + b.tete->valeur;
-            temp->suiv = new t_coord();
-            temp = temp->suiv;
+        if(a.defaut!=a.tete->valeur  && b.defaut != b.tete->valeur){
+            c.tete->indice = a.tete->indice;
+            c.tete->valeur = a.tete->valeur + b.tete->valeur;
+            c.tete->suiv = new t_coord();
             a.tete = a.tete->suiv;
             b.tete = b.tete->suiv;
+            c.tete->suiv = (somme(a,b)).tete
         }
     }else{
-	    cout<<"les vecteurs doivent etre de meme dimension
-	    et non nulle pour que leurs somme ait un sens"<<endl;
+        cout<<"les vecteurs doivent etre de meme dimension et non nulle pour que leur somme ait un sens"<<endl;
         c.tete = nullptr;
         c.dimension = 0;
         c.defaut = 0;
@@ -202,32 +169,21 @@ t_vecteur somme (t_vecteur a, t_vecteur b){
     return c;
 }
 
-double produit (t_vecteur a, t_vecteur b, bool completA,bool completB){
-    if(!completA)
-    {
-        a = significatif(a,false);
-    }
-    if(!completB)
-    {
-        b = significatif(b,false);
-    }
+double produit (t_vecteur a, t_vecteur b){
 	double p;
-	if(a.dimension == b.dimension && a.dimension != 0)
-	{
-		p = a.tete->valeur * b.tete->valeur;
-		if(a.dimension != a.tete->indice)
+	if(a.dimension == b.dimension && a.dimension > 0){
+		if(a.defaut != a.tete->valeur && b.defaut != b.tete->valeur)
 		{
+			p = a.tete->valeur * b.tete->valeur;
 			a.tete = a.tete->suiv;
 			b.tete = b.tete->suiv;
-			p = p + produit(a,b,completA,completB);
+			p = p + produit(a,b);
 		}
-	}else
-	{
-		cout << "les vecteurs doivent etre de meme dimension et non nule pour que leur produit scalaire ait un sens. Attention la fonction retourne 0 par defaut !" << endl;
+	}else{
+		cout << "les vecteurs doivent etre de meme dimension et non nulle pour que leur produit scalaire ait un sens. Attention la fonction retourne 0 par defaut !" << endl;
 		p = 0;
 	}
 	return p;
-
 }
 
 int main()
