@@ -23,7 +23,7 @@ void supprimer (t_vecteur & vec) {
         temp.tete = temp.tete->suiv;
 	    supprimer(temp);
 	}
-	delete vec.tete;
+	delete vec.tete->suiv;
 	vec.tete = nullptr;
 }
 
