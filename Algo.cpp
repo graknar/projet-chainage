@@ -155,29 +155,27 @@ void afficher (t_vecteur vec, bool complet){
 }
 
 void saisir (t_vecteur vec){
-	string a;
+    t_coord * Tempo;
+    Tempo= vec.tete;
 	for (int i = 0; i < vec.dimension ; i++){
-			if(vec.tete->valeur == vec.defaut)
-			{
-				bool valid;
-				double a;
-				do
-				{
-					valid = false;
-					cout << "Saisir la valeur de la coordonnee d'indice: "<< i+1 << endl;
-					cin >> a;
-					if(cin.fail())
-					{
-						valid = cin.fail();
-						cin.clear();
-						cin.ignore();
-						cout << "la valeur de la coordonnee doit etre un reel."<< endl;
-					}
-				}while(valid);
-				vec.tete->valeur = a;
-				vec.tete = vec.tete->suiv;
-			}
-	}
+        if(Tempo->valeur == vec.defaut){
+            bool valid;
+            double b;
+            do{
+                valid = false;
+                cout << "Saisir la valeur de la coordonnee d'indice: "<< i+1 << endl;
+                cin >> a;
+                if(cin.fail()){
+                    valid = cin.fail();
+                    cin.clear();
+                    cin.ignore();
+                    cout << "la valeur de la coordonnee doit etre un reel."<< endl;
+                    }
+            }while(valid);
+            Tempo->valeur = a;
+            Tempo = Tempo->suiv;
+        }
+    }
 }
 
 t_vecteur somme (t_vecteur a, t_vecteur b, bool completA,bool completB){
