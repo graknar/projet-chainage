@@ -229,12 +229,11 @@ t_vecteur somme (t_vecteur a, t_vecteur b){
             c.tete->suiv = new t_coord();
             a.tete = a.tete->suiv;
             b.tete = b.tete->suiv;
-            c.tete->suiv = (somme(a,b)).tete
+            c.tete->suiv = (somme(a,b)).tete;
         }else{
-            cout<<"Les vecteurs ne contiennent plus de valeurs"<<endl;
-            c.tete = nullptr;
-            c.dimension = 0;
-            c.defaut = 0;
+            cout<<"Les vecteurs ne contiennent plus de valeurs"<<endl; 
+            delete c.tete;
+            c.tete = nullptr;      
         }
     }else{
         cout<<"les vecteurs doivent etre de meme dimension"
@@ -262,9 +261,7 @@ double produit (t_vecteur a, t_vecteur b){
             p = p + produit(a,b);
         }else{
             cout<<"Les vecteurs ne contiennent plus de valeurs"<<endl;
-            c.tete = nullptr;
-            c.dimension = 0;
-            c.defaut = 0;
+            p=0;
         }
     }else
     {
