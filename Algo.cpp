@@ -155,8 +155,7 @@ void afficher (t_vecteur vec, bool complet){
 }
 
 void saisir (t_vecteur vec){
-    t_coord * Tempo;
-    Tempo= vec.tete;
+    t_coord * Tempo = vec.tete;
 	for (int i = 0; i < vec.dimension ; i++){
         if(Tempo->valeur == vec.defaut){
             bool valid;
