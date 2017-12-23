@@ -89,37 +89,37 @@ void initialiser (t_vecteur & vec, int d, double v){
 }
 
 void afficher (t_vecteur vec, bool complet){
-    t_coord * temp = vec.tete;
-    if(complet)
-    {
-		cout<<"[";
-		for (int i = 0; i < vec.dimension ; i++){
-			cout<<temp->valeur;
-			temp = temp->suiv;
-			if(i < vec.dimension-1)
-			{
-				cout<<" , ";
-			}
-		}
-		cout<<"]"<<endl;
-	}else
-	{
-		bool virg = false;
-		cout<<"[";
-		for (int i = 0; i < vec.dimension ; i++){
-			if(temp->valeur != vec.defaut)
-			{
-				if(virg){
-					cout<<" , ";
-					virg = false;
-				}
-				cout<<temp->indice<<":"<<temp->valeur;
-				virg = true;
-			}
-			temp = temp->suiv;
-		}
-		cout<<"]"<<endl;
-	}
+    if(vec.tete!=nullptr){
+        t_coord * temp = vec.tete;
+        if(complet){
+            cout<<"[";
+            for (int i = 0; i < vec.dimension ; i++){
+                cout<<temp->valeur;
+                temp = temp->suiv;
+                if(i < vec.dimension-1){
+                    cout<<" , ";
+                }
+            }
+            cout<<"]"<<endl;
+        }else{
+            bool virg = false;
+            cout<<"[";
+            for (int i = 0; i < vec.dimension ; i++){
+                if(temp->valeur != vec.defaut){
+                    if(virg){
+                        cout<<" , ";
+                        virg = false;
+                    }
+                    cout<<temp->indice<<":"<<temp->valeur;
+                    virg = true;
+                }
+                temp = temp->suiv;
+            }
+            cout<<"]"<<endl;
+        }
+    }else{
+        cout<<"La tête du vecteur est vide"<<endl;
+    }
 }
 
 void saisir (t_vecteur vec){
@@ -128,7 +128,7 @@ void saisir (t_vecteur vec){
 	for (int i = 0; i < vec.dimension ; i++){
         if(Tempo->valeur == vec.defaut){
             bool valid;
-            double b;
+            double a;
             do{
                 valid = false;
                 cout << "Saisir la valeur de la coordonnee d'indice: "<< i+1 << endl;
@@ -159,6 +159,11 @@ t_vecteur somme (t_vecteur a, t_vecteur b){
             a.tete = a.tete->suiv;
             b.tete = b.tete->suiv;
             c.tete->suiv = (somme(a,b)).tete
+        }else{
+            cout<<"Les vecteurs ne contiennent plus de valeurs"<<endl;
+            c.tete = nullptr;
+            c.dimension = 0;
+            c.defaut = 0;
         }
     }else{
         cout<<"les vecteurs doivent etre de meme dimension et non nulle pour que leur somme ait un sens"<<endl;
@@ -178,7 +183,12 @@ double produit (t_vecteur a, t_vecteur b){
 			a.tete = a.tete->suiv;
 			b.tete = b.tete->suiv;
 			p = p + produit(a,b);
-		}
+		}else{
+            cout<<"Les vecteurs ne contiennent plus de valeurs"<<endl;
+            c.tete = nullptr;
+            c.dimension = 0;
+            c.defaut = 0;
+        }
 	}else{
 		cout << "les vecteurs doivent etre de meme dimension et non nulle pour que leur produit scalaire ait un sens. Attention la fonction retourne 0 par defaut !" << endl;
 		p = 0;
