@@ -177,38 +177,29 @@ void saisir (t_vecteur vec){
     }
 }
 
-t_vecteur somme (t_vecteur a, t_vecteur b, bool completA,bool completB){
-    if(!completA)
-    {
-        a = significatif(a,false);
+t_vecteur somme (t_vecteur a, t_vecteur b){
+    t_vecteur c;
+    if(a.dimension == b.dimension && a.dimension != 0){
+        c.tete = new t_coord();
+        c.dimension = a.dimension;
+        c.defaut = a.defaut + b.defaut;
+        t_coord * temp = c.tete;
+        for(int i = 0 ; i < a.dimension ; i++){
+            temp->indice = a.tete->indice;
+            temp->valeur = a.tete->valeur + b.tete->valeur;
+            temp->suiv = new t_coord();
+            temp = temp->suiv;
+            a.tete = a.tete->suiv;
+            b.tete = b.tete->suiv;
+        }
+    }else{
+	    cout<<"les vecteurs doivent etre de meme dimension
+	    et non nulle pour que leurs somme ait un sens"<<endl;
+        c.tete = nullptr;
+        c.dimension = 0;
+        c.defaut = 0;
     }
-    if(!completB)
-    {
-        b = significatif(b,false);
-    }
-	t_vecteur c;
-	if(a.dimension == b.dimension && a.dimension != 0)
-	{
-		c.tete = new t_coord();
-		c.dimension = a.dimension;
-		c.defaut = a.defaut + b.defaut;
-		t_coord * temp = c.tete;
-		for(int i = 0 ; i < a.dimension ; i++){
-			temp->indice = a.tete->indice;
-			temp->valeur = a.tete->valeur + b.tete->valeur;
-			temp->suiv = new t_coord();
-			temp = temp->suiv;
-			a.tete = a.tete->suiv;
-			b.tete = b.tete->suiv;
-		}
-	}else
-	{
-	    cout<<"les vecteurs doivent etre de meme dimension et non nule pour que leur somme ait un sens"<<endl;
-		c.tete = nullptr;
-		c.dimension = 0;
-		c.defaut = 0;
-	}
-	return c;
+    return c;
 }
 
 double produit (t_vecteur a, t_vecteur b, bool completA,bool completB){
